@@ -1,0 +1,15 @@
+[app]
+title = Coding GK Quiz
+package.name = codingquiz
+package.domain = org.quiz
+source.include_exts = py,png,jpg,kv,atlas
+source.include_patterns = assets/*
+version = 1.1
+requirements = python3,kivy
+orientation = portrait
+fullscreen = 0
+android.api = 33
+android.minapi = 24
+android.sdk = 33
+android.ndk = 25b
+android.archs = armeabi-v7a
