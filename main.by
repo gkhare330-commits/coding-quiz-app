@@ -1,0 +1,61 @@
+from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.button import Button
+from kivy.uix.label import Label
+
+class ColorfulQuizApp(App):
+    def build(self):
+        self.score = 0
+        self.current_q = 0
+        
+        self.questions = [
+            {"q": "1. Which programming language is known for AI & Data Science?", "options": ["A) Java", "B) Python", "C) C++", "D) HTML"], "ans": "B) Python"},
+            {"q": "2. What is the brain of the computer?", "options": ["A) RAM", "B) Hard Disk", "C) CPU", "D) Monitor"], "ans": "C) CPU"},
+            {"q": "3. Which keyword is used to define a function in Python?", "options": ["A) func", "B) define", "C) def", "D) function"], "ans": "C) def"},
+            {"q": "4. Which company developed the Gemini AI model?", "options": ["A) Microsoft", "B) Google", "C) OpenAI", "D) Meta"], "ans": "B) Google"}
+        ]
+        
+        layout = BoxLayout(orientation='vertical', padding=20, spacing=15)
+        
+        self.score_label = Label(text=f"Score: {self.score}", font_size='22sp', size_hint=(1, 0.1))
+        layout.add_widget(self.score_label)
+        
+        self.q_label = Label(text=self.questions[self.current_q]['q'], font_size='18sp', size_hint=(1, 0.2))
+        layout.add_widget(self.q_label)
+        
+        self.option_buttons = []
+        for opt in self.questions[self.current_q]['options']:
+            btn = Button(text=opt, font_size='16sp', size_hint=(1, 0.15), background_normal='', background_color=(0.2, 0.6, 0.8, 1))
+            btn.bind(on_press=self.check_answer)
+            layout.add_widget(btn)
+            self.option_buttons.append(btn)
+            
+        return layout
+
+    def check_answer(self, instance):
+        correct_ans = self.questions[self.current_q]['ans']
+        
+        if instance.text == correct_ans:
+            self.score += 10
+            self.score_label.text = f"Score: {self.score} (Correct!)"
+            instance.background_color = (0.2, 0.7, 0.3, 1)
+        else:
+            self.score_label.text = f"Score: {self.score} (Wrong!)"
+            instance.background_color = (0.8, 0.2, 0.2, 1)
+            
+        self.current_q += 1
+        if self.current_q < len(self.questions):
+            self.q_label.text = self.questions[self.current_q]['q']
+            for i, opt in enumerate(self.questions[self.current_q]['options']):
+                self.option_buttons[i].text = opt
+                self.option_buttons[i].background_color = (0.2, 0.6, 0.8, 1)
+        else:
+            self.q_label.text = f"Quiz Completed! Final Score: {self.score}"
+            for btn in self.option_buttons:
+                btn.text = "---"
+                btn.disabled = True
+                btn.background_color = (0.4, 0.4, 0.4, 1)
+
+if __name__ == '__main__':
+    ColorfulQuizApp().run()
+    
